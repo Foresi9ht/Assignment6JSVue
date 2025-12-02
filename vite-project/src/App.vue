@@ -1,22 +1,38 @@
 <template>
   <div class="app">
     <h1>List of people</h1>
-    <PeopleGallery
+
+    <!-- Навигация -->
+    <nav>
+      <router-link to="/all">All Students</router-link>
+      <router-link to="/liked">Most Liked</router-link>
+      <router-link to="/disliked">Most Disliked</router-link>
+    </nav>
+
+    <!-- Передаём people + методы в любую страницу -->
+    <router-view
+      v-slot="{ Component }"
       :people="people"
-      @like-person="handleLike"
-      @dislike-person="handleDislike"
-      @add-person="handleAddPerson"
-      @reset-all="handleResetAll"
-    />
+      :onLike="handleLike"
+      :onDislike="handleDislike"
+      :onAdd="handleAddPerson"
+      :onReset="handleResetAll"
+    >
+      <component
+        :is="Component"
+        :people="people"
+        :onLike="handleLike"
+        :onDislike="handleDislike"
+        :onAdd="handleAddPerson"
+        :onReset="handleResetAll"
+      />
+    </router-view>
   </div>
 </template>
 
 <script>
-import PeopleGallery from "./components/PeopleGallery.vue";
-
 export default {
   name: "App",
-  components: { PeopleGallery },
 
   data() {
     return {
@@ -62,3 +78,11 @@ export default {
   },
 };
 </script>
+
+<style>
+nav {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+</style>
